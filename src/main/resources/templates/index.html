@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+    <meta charset="UTF-8">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <link href="/webjars/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <script src="/js/app.js"></script>
+</head>
+<body>
+<div class="container" >
+    <!--/* Standard layout can be mixed with Layout Dialect */-->
+    <div class="jumbotron">
+        <h1 sec:authorize="isAuthenticated()">Hola <span th:text="${#authentication.principal.nombre + ' ' + #authentication.principal.apellido}"></span>!</h1>
+        <p class="lead">Esta es la página principal de la aplicación</p>
+        <hr class="my-4">
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="mx-auto bi-balloon-heart" style="font-size: 8em"></i>
+        </div>
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="alert alert-primary" role="alert">
+            <div class="d-flex">
+                <i class="mx-auto bi-keyboard" style="font-size: 8em"></i>
+            </div>
+            <div class="d-flex">
+                <p class="mx-auto">Si ves esto eres administrador</p>
+            </div>
+        </div>
+        <div sec:authorize="hasAuthority('ROLE_USUARIO')" class="alert alert-primary" role="alert">
+            <div class="d-flex">
+                <i class="mx-auto bi-person-vcard" style="font-size: 8em"></i>
+            </div>
+            <div class="d-flex">
+                <p class="mx-auto">Si ves esto eres Usuario</p>
+            </div>
+        </div>
+        <div class="d-flex">
+            <form class="mx-auto" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <input data-bs-toggle="tooltip" data-bs-placement="top"
+                           data-bs-custom-class="custom-tooltip"
+                           data-bs-title="Haz click para salir de la aplicación" class="mx-auto btn btn-danger" type="submit" value="Sign Out"/>
+            </form>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="container flex">
+            <!-- Button trigger modal -->
+            <button type="button" class="d-flex mx-auto btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                Mostrar mi info
+            </button>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}">&copy; EOI</div>
+<!-- Modal -->
+<div sec:authorize="isAuthenticated()" th:replace="~{fragments/modal :: modal}"></div>
+<!-- Cargamos el script de Bootstrap al final del archivo para mejorar la velocidad de carga -->
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+
